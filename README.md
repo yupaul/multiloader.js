@@ -2,7 +2,7 @@
 
 Load multiple scripts into a HTML page.
 
-Any script can have also have multiple alternative sources, in case one fails, loading from another source. 
+Any script can also have multiple alternative sources - in case one fails, it loads from another source. 
 Optional callback function is executed when all scripts finished loading.
 
 ```javascript
