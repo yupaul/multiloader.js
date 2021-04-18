@@ -1,4 +1,4 @@
-((function(_window) {	
+(function(_window) {	
 	_window.multiloader = function() {
 		let src;
 		let _self = arguments.callee;
