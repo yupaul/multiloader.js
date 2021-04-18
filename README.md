@@ -11,7 +11,7 @@ multiloader(
                                                                             // only one loads
   'https://a.com/my2.js',                                                   //this loads 2nd  
   ['https://a.com/my3.js', 'https://b.com/my3.js', 'https://c.com/my3.js'], // this loads 3rd, 
-                                                                            // alternative versions, only one loads  
+                                                                            // 3 alt. versions, only one loads  
   // ... can load more
   () => console.log('All Loaded!') //optional     
 )  
