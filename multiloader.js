@@ -1,40 +1,40 @@
-var multiloader = function() {	
-	var src;
-	var _self = arguments.callee;
-	var _args = [].slice.call(arguments); 
-	var callback = _args.length > 1 && typeof _args[_args.length - 1] === 'function' ? _args.pop() : (new Function);
+((function(_window) {	
+	_window.multiloader = function() {
+		let src;
+		let _self = arguments.callee;
+		let _args = [].slice.call(arguments); 
+		let callback = _args.length > 1 && typeof _args[_args.length - 1] === 'function' ? _args.pop() : (new Function);
 
-	if(_args.length > 1) return _self(_args, callback);
-	if(_args.length !== 1) return;
-	var a0 = _args[0];
+		if(_args.length > 1) return _self(_args, callback);
+		if(_args.length !== 1) return;
+		let arg0 = _args[0];
 
-	var a_rest = typeof a0 === 'string' ? [] : a0.splice(1);
-	var s = document.createElement('script');
-	if(a_rest.length > 0) {
-		s.onload = function() {
-			_self(a_rest, callback);
-		};
-	} else {
-		s.onload = callback;
-	}
-	if(typeof a0 === 'string') {
-		src = a0;
-	} else {
-		var a00 = a0[0];
-		if(typeof a00 === 'object') {
-			var a0_rest = a00.splice(1);
-			if(a0_rest.length > 0) {
-				s.onerror = function() {
-					var _a_rest = [].slice.call(a_rest);
-					_a_rest.unshift(a0_rest);
-					_self(_a_rest, callback);
-				};
-			}
-			src = a00[0];
+		let a_rest = typeof arg0 === 'string' ? [] : arg0.splice(1);
+		let s = document.createElement('script');
+		if(a_rest.length > 0) {
+			s.onload = () => _self(a_rest, callback);
 		} else {
-			src = a00;
+			s.onload = callback;
 		}
+		if(typeof arg0 === 'string') {
+			src = arg0;
+		} else {
+			let arg00 = arg0[0];
+			if(typeof arg00 === 'object') {
+				let arg0_rest = arg00.splice(1);
+				if(arg0_rest.length > 0) {
+					s.onerror = () => {
+						let _a_rest = [].slice.call(a_rest);
+						_a_rest.unshift(arg0_rest);
+						_self(_a_rest, callback);
+					};
+				}
+				src = arg00[0];
+			} else {
+				src = arg00;
+			}
+		}
+		s.src = src;
+		document.getElementsByTagName('head')[0].appendChild(s);
 	}
-	s.src = src;
-	document.getElementsByTagName('head')[0].appendChild(s);
-};
+})(window);
