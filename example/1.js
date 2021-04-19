@@ -1,0 +1,1 @@
+document.getElementById('div-1').innerHTML = '1.js loaded';

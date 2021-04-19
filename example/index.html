@@ -1,0 +1,17 @@
+<!DOCTYPE html> <html lang="en"><meta charset="utf-8">
+<head>
+<title>multiloader.js example</title>
+<script src="../multiloader.js"></script>
+</head>
+<body>
+<div id="div-1"></div>
+<div id="div-2"></div>
+<div id="div-3"></div>
+<div id="div-done"></div>
+<script>
+multiloader(['111.js', '11.js', '1.js'], '2.js', ['33.js', '3.js'], () => {
+	document.getElementById('div-done').innerHTML = 'Done';
+});
+</script>
+</body>
+</html>
