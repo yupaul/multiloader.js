@@ -34,6 +34,7 @@
 			} else {
 				src = arg00;
 			}
+			if(typeof src !== 'string') return;
 		}
 		s.src = src;
 		document.getElementsByTagName('head')[0].appendChild(s);
