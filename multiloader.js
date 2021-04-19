@@ -9,7 +9,7 @@
 		if(_args.length !== 1) return;
 		let arg0 = _args[0];
 
-		let a_rest = typeof arg0 === 'string' ? [] : arg0.splice(1);
+		let a_rest = Array.isArray(arg0) ? arg0.splice(1) : [];
 		let s = document.createElement('script');
 		if(a_rest.length > 0) {
 			s.onload = () => _self(a_rest, callback);
@@ -19,8 +19,9 @@
 		if(typeof arg0 === 'string') {
 			src = arg0;
 		} else {
+			if(!arg0.hasOwnProperty('0')) return;
 			let arg00 = arg0[0];
-			if(typeof arg00 === 'object') {
+			if(Array.isArray(arg00)) {
 				let arg0_rest = arg00.splice(1);
 				if(arg0_rest.length > 0) {
 					s.onerror = () => {
