@@ -1,12 +1,17 @@
 (function(_window) {	
 	_window.multiloader = function() {
 		let src;
+		let _had_state = _window.multiloader._state;
+		if(!_had_state) _window.multiloader._state = true;
 		let _self = arguments.callee;
 		let _args = [].slice.call(arguments); 
+		
 		let callback = _args.length > 1 && typeof _args[_args.length - 1] === 'function' ? _args.pop() : (new Function);
 
 		if(_args.length > 1) return _self(_args, callback);
 		if(_args.length !== 1) return;
+		if(!_had_state && Array.isArray(_args[0]) && _args[0].length > 1) return _self(_args, callback);		
+
 		let arg0 = _args[0];
 
 		let a_rest = Array.isArray(arg0) ? arg0.splice(1) : [];
