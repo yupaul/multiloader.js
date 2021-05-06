@@ -3,18 +3,18 @@
 		let src;
 		let _had_state = _window.multiloader._state !== undefined;
 		if(!_had_state) _window.multiloader._state = true;
-		let _self = arguments.callee;
+		const _self = arguments.callee;
 		let _args = [].slice.call(arguments); 
 		
-		let callback = _args.length > 1 && typeof _args[_args.length - 1] === 'function' ? _args.pop() : (new Function);
+		const callback = _args.length > 1 && typeof _args[_args.length - 1] === 'function' ? _args.pop() : (new Function);
 
 		if(_args.length < 1) return;
 		if(_args.length > 1 || (!_had_state && Array.isArray(_args[0]) && _args[0].length > 1)) return _self(_args, callback);
 
 		let arg0 = _args[0];
 
-		let a_rest = Array.isArray(arg0) ? arg0.splice(1) : [];
-		let s = document.createElement('script');
+		const a_rest = Array.isArray(arg0) ? arg0.splice(1) : [];
+		const s = document.createElement('script');
 		if(a_rest.length > 0) {
 			s.onload = () => _self(a_rest, callback);
 		} else {
@@ -26,7 +26,7 @@
 			if(!arg0.hasOwnProperty('0')) return;
 			let arg00 = arg0[0];
 			if(Array.isArray(arg00)) {
-				let arg0_rest = arg00.splice(1);
+				const arg0_rest = arg00.splice(1);
 				if(arg0_rest.length > 0) {
 					s.onerror = () => {
 						let _a_rest = [].slice.call(a_rest);
