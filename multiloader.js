@@ -14,7 +14,7 @@
 		let arg0 = _args[0];
 
 		const a_rest = Array.isArray(arg0) ? arg0.splice(1) : [];
-		const s = document.createElement('script');
+		const s = _window.document.createElement('script');
 		if(a_rest.length > 0) {
 			s.onload = () => _self(a_rest, callback);
 		} else {
@@ -41,6 +41,6 @@
 			if(typeof src !== 'string') return;
 		}
 		s.src = src;
-		document.getElementsByTagName('head')[0].appendChild(s);
+		_window.document.getElementsByTagName('head')[0].appendChild(s);
 	}
 })(window);
