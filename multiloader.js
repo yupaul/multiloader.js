@@ -33,7 +33,6 @@
       ? args.pop()
       : () => {};
 
-    // Accept either a single array or variadic args
     const queue = args.length === 1 && Array.isArray(args[0]) ? args[0].slice() : args;
 
     if (queue.length > 0) _load_next(queue, cb);
