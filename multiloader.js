@@ -1,46 +1,41 @@
-(function(_window) {	
-	_window.multiloader = function() {
-		let src;
-		const _self = arguments.callee;
-		let _args = [].slice.call(arguments); 
+(function (window) {
+  function _load_next(queue, cb) {
+    if (queue.length === 0) {
+      cb();
+      return;
+    }
 
-		const _had_state = _args.length > 1 && _args[_args.length - 1] === true ? _args.pop() : false;
-		
-		const callback = _args.length > 1 && typeof _args[_args.length - 1] === 'function' ? _args.pop() : (new Function);
+    const item = queue[0];
+    const remaining = queue.slice(1);
+    let src, fallbacks;
 
-		if(_args.length < 1) return;
-		if(_args.length > 1 || (!_had_state && Array.isArray(_args[0]) && _args[0].length > 1)) return _self(_args, callback, true);
+    if (typeof item === 'string') {
+      src = item;
+      fallbacks = [];
+    } else if (Array.isArray(item) && item.length > 0 && typeof item[0] === 'string') {
+      src = item[0];
+      fallbacks = item.slice(1);
+    } else {
+      return;
+    }
 
-		let arg0 = _args[0];
+    const script = window.document.createElement('script');
+    script.onload = () => _load_next(remaining, cb);
+    script.onerror = fallbacks.length > 0
+      ? () => _load_next([fallbacks, ...remaining], cb)
+      : () => {};
+    script.src = src;
+    window.document.head.appendChild(script);
+  }
 
-		const a_rest = Array.isArray(arg0) ? arg0.splice(1) : [];
-		const s = _window.document.createElement('script');
-		if(a_rest.length > 0) {
-			s.onload = () => _self(a_rest, callback, true);
-		} else {
-			s.onload = callback;
-		}
-		if(typeof arg0 === 'string') {
-			src = arg0;
-		} else {
-			if(!arg0.hasOwnProperty('0')) return;
-			let arg00 = arg0[0];
-			if(Array.isArray(arg00)) {
-				const arg0_rest = arg00.splice(1);
-				if(arg0_rest.length > 0) {
-					s.onerror = () => {
-						let _a_rest = [].slice.call(a_rest);
-						_a_rest.unshift(arg0_rest);
-						_self(_a_rest, callback, true);
-					};
-				}
-				src = arg00[0];
-			} else {
-				src = arg00;
-			}
-			if(typeof src !== 'string') return;
-		}
-		s.src = src;
-		_window.document.getElementsByTagName('head')[0].appendChild(s);
-	}
+  window.multiloader = function (...args) {
+    const cb = args.length > 0 && typeof args[args.length - 1] === 'function'
+      ? args.pop()
+      : () => {};
+
+    // Accept either a single array or variadic args
+    const queue = args.length === 1 && Array.isArray(args[0]) ? args[0].slice() : args;
+
+    if (queue.length > 0) _load_next(queue, cb);
+  };
 })(window);
