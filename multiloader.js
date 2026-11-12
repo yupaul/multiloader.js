@@ -2,6 +2,7 @@
   // Map of already loaded script sources, e.g. { 'https://example.com/a.js': true }.
   // Kept on window so every multiloader call (and every copy of this file) sees it.
   window._multiloader_loaded = window._multiloader_loaded || {};
+  if (window.multiloader) return;
 
   function _is_loaded(src) {
     return Object.prototype.hasOwnProperty.call(window._multiloader_loaded, src) &&
