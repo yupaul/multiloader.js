@@ -26,3 +26,31 @@ multiloader('https://example.com/script.js')
 // load one script, with one alternative source
 multiloader(['https://example1.com/script.js', 'https://example2.com/script.js']) 
 ```
+
+## Skip scripts that are already loaded
+
+A script can opt out of loading when one of its sources was already loaded by a
+previous `multiloader` call. Use the object form with `once: true`:
+
+```javascript
+// skip if a.js was loaded before (by any multiloader call), otherwise load it
+multiloader({ src: 'https://a.com/a.js', once: true })
+
+// string and array forms still work and can be mixed with object items
+multiloader(
+  { src: 'https://a.com/a.js', once: true },
+  ['https://a.com/b.js', 'https://b.com/b.js'],
+  { src: ['https://a.com/c.js', 'https://b.com/c.js'], once: true },
+  () => console.log('All Loaded!')
+)
+```
+
+Notes:
+
+- When any source of an item loads, **all** of that item's sources are marked in
+  `window._multiloader_loaded`, so alternative URLs also count as loaded.
+- The map is filled for every successfully loaded item; `once: true` only
+  controls whether the item is skipped.
+- `multiloader('https://a.com/a.js')` (old form) still loads unconditionally.
+- Concurrent calls are not deduplicated: the flag is set when the script has
+  actually finished loading.
